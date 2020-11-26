@@ -12,7 +12,8 @@ updateTopic = "iotdm-1/device/update"
 rebootTopic = "iotdm-1/mgmt/initiate/device/reboot"
 
 #led = Pin(16, Pin.OUT)
-led =Pin(2,Pin.OUT)
+led =Pin(2,Pin.OUT) 
+button = Pin(5, Pin.IN, Pin.PULL_UP)
 
 def connectWiFi(ssid, password, timeout = 20):
   wlan = WLAN(STA_IF)
@@ -60,14 +61,23 @@ def callback(topic, msg):
     mqttClient.publish(publishTopic, ujson.dumps(response))
   
 
-def main():
-  connectWiFi("MiKodaPlay", "Qu3nTocaP3ta")
-  mqttClient = Conexion_MQTT_WIOTP("31pdmc", "ESP8266", "ESP1", "password")
-  mqttClient.subscribe(ledTopic)
-  while True:
-    mqttClient.check_msg()
-    sleep_ms(100)
-  mqttClient.disconnect()
-  
 
-#main()
+
+connectWiFi("MiKodaPlay", "Qu3nTocaP3ta")
+mqttClient = Conexion_MQTT_WIOTP("31pdmc", "ESP8266", "ESP1", "password")
+mqttClient.subscribe(ledTopic)
+
+count = 0
+msg = ujson.dumps({"hey": "hola"})
+while True:
+  mqttClient.check_msg()
+  sleep_ms(100)
+  
+mqttClient.disconnect()
+
+
+
+
+
+
+
